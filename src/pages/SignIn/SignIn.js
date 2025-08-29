@@ -6,14 +6,14 @@ import { signIn } from '../../redux/reducers/authSlice'
 function LoginForm() {
   const dispatch = useDispatch()
   const navigate = useNavigate() 
-  const { loading, error, user } = useSelector((state) => state.auth)
+  const { loading, error, token } = useSelector((state) => state.auth)
   const [credentials, setCredentials] = useState({ email: '', password: '', rememberMe: false })
   
     useEffect(() => {
-      if (user) {
+      if (token) {
         navigate('/user')   
       }
-    }, [user, navigate])
+    }, [token, navigate])
   
     const handleSubmit = (e) => {
       e.preventDefault()

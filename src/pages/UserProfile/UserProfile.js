@@ -1,16 +1,36 @@
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchUserProfile } from '../../redux/reducers/authSlice'
+
 export default function UserProfile() {
-    return (
-      <>
-        <main className="main bg-dark">
-          <div className="header">
-            <h1>
-              Welcome back
-              <br />
-              Tony Jarvis!
-            </h1>
-            <button className="edit-button">Edit Name</button>
-          </div>
-          <h2 className="sr-only">Accounts</h2>
+  const dispatch = useDispatch()
+  const profile = useSelector(state => state.auth.profile)
+  const loading = useSelector(state => state.auth.loading)
+
+  useEffect(() => {
+    dispatch(fetchUserProfile())
+  }, [dispatch])
+
+  if (loading === 'pending') {
+    return <div>Chargement du profil...</div>
+  }
+
+  if (!profile) {
+    return <div>Erreur : profil utilisateur non trouvé.</div>
+  }
+
+  return (
+    <>
+      <main className="main bg-dark">
+        <div className="header">
+          <h1>
+            Welcome back
+            <br />
+            {profile.firstName} {profile.lastName} !
+          </h1>
+          <button className="edit-button">Edit Name</button>
+        </div>
+        <h2 className="sr-only">Accounts</h2>
           <section className="account">
             <div className="account-content-wrapper">
               <h3 className="account-title">Argent Bank Checking (x8349)</h3>

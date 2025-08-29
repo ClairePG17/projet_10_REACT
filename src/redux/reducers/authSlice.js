@@ -1,31 +1,39 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { userAPI } from '../actions/userApi'
 
-// Thunk asynchrone pour l’authentification
 export const signIn = createAsyncThunk(
   'auth/signInStatus',
   async (credentials, thunkAPI) => {
     try {
-      const userData = await userAPI.signIn(credentials)
-      return userData
+      const response = await userAPI.signIn(credentials)
+      return response.body.token
     } catch (error) {
-      // Utiliser rejectWithValue pour envoyer l’erreur au reducer
       return thunkAPI.rejectWithValue(error)
     }
   }
 )
 
-// État initial
-const initialState = {
-  user: null,
-  loading: 'idle',
-  error: null,
-}
+export const fetchUserProfile = createAsyncThunk(
+  'auth/fetchUserProfile',
+  async (_, thunkAPI) => {
+    const token = thunkAPI.getState().auth.token
+    try {
+      const profile = await userAPI.getProfile(token)
+      return profile
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }
+)
 
-// Slice pour mettre à jour l’état selon le statut de la requête
 const authSlice = createSlice({
   name: 'auth',
-  initialState,
+  initialState: {
+    token: null,
+    profile: null,
+    loading: 'idle',
+    error: null,
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -35,13 +43,28 @@ const authSlice = createSlice({
       })
       .addCase(signIn.fulfilled, (state, action) => {
         state.loading = 'idle'
-        state.user = action.payload
+        state.token = action.payload
       })
       .addCase(signIn.rejected, (state, action) => {
+        state.loading = 'idle'
+        state.error = action.payload || action.error.message
+      })
+      .addCase(fetchUserProfile.pending, (state) => {
+        state.loading = 'pending'
+        state.error = null
+      })
+      .addCase(fetchUserProfile.fulfilled, (state, action) => {
+        state.loading = 'idle'
+        state.profile = action.payload.body
+      })
+      .addCase(fetchUserProfile.rejected, (state, action) => {
         state.loading = 'idle'
         state.error = action.payload || action.error.message
       })
   },
 })
 
+
 export default authSlice.reducer
+
+  
