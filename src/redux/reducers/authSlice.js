@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { userAPI } from '../actions/userApi'
 
 export const signIn = createAsyncThunk(
-  'auth/signInStatus',
+  'auth/signInStatus', //par convention <nom_du_slice>/<nom_de_l_action>
   async (credentials, thunkAPI) => {
     try {
       const response = await userAPI.signIn(credentials)
@@ -34,7 +34,14 @@ const authSlice = createSlice({
     loading: 'idle',
     error: null,
   },
-  reducers: {},
+  reducers: {
+    logout(state) {
+      state.token = null
+      state.profile = null
+      state.error = null
+      state.loading = 'idle'
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(signIn.pending, (state) => {
@@ -43,7 +50,7 @@ const authSlice = createSlice({
       })
       .addCase(signIn.fulfilled, (state, action) => {
         state.loading = 'idle'
-        state.token = action.payload
+        state.token = action.payload //stock le token
       })
       .addCase(signIn.rejected, (state, action) => {
         state.loading = 'idle'
@@ -55,7 +62,7 @@ const authSlice = createSlice({
       })
       .addCase(fetchUserProfile.fulfilled, (state, action) => {
         state.loading = 'idle'
-        state.profile = action.payload.body
+        state.profile = action.payload.body //stock données du profil
       })
       .addCase(fetchUserProfile.rejected, (state, action) => {
         state.loading = 'idle'
@@ -64,7 +71,7 @@ const authSlice = createSlice({
   },
 })
 
-
+export const { logout } = authSlice.actions
 export default authSlice.reducer
 
   
