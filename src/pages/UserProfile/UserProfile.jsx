@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchUserProfile } from '../../redux/reducers/authSlice'
+import { fetchUserProfile, updateUserProfile } from '../../redux/reducers/authSlice'
 import CartTransaction from '../../components/CartTransaction/CartTransaction'
 
 export default function UserProfile() {
@@ -8,49 +8,99 @@ export default function UserProfile() {
   const profile = useSelector(state => state.auth.profile)
   const loading = useSelector(state => state.auth.loading)
 
+  const [isEditing, setIsEditing] = useState(false)
+
+  // Local states for fields
+  const [userName, setUserName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+
   useEffect(() => {
     dispatch(fetchUserProfile())
   }, [dispatch])
 
-  if (loading === 'pending') {
-    return <div>Chargement du profil...</div>
-  }
+  useEffect(() => {
+    if (profile) {
+      setUserName(profile.userName ?? '')
+      setFirstName(profile.firstName ?? '')
+      setLastName(profile.lastName ?? '')
+    }
+  }, [profile])
 
-  if (!profile) {
-    return <div>Erreur : profil utilisateur non trouvé.</div>
+  if (loading === 'pending') return <div>Chargement du profil...</div>
+  if (!profile) return <div>Erreur : profil utilisateur non trouvé.</div>
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    await dispatch(updateUserProfile({ userName, firstName, lastName }))
+    await dispatch(fetchUserProfile()) // Refresh after update
+    setIsEditing(false)
   }
 
   return (
-    <>
-      <main className="main bg-dark">
-        <div className="header">
-          <h1>
-            Welcome back
-            <br />
-            {profile.firstName} {profile.lastName} !
-          </h1>
-          <button className="edit-button">Edit Name</button>
+    <main className="main bg-dark">
+      {isEditing ? (
+        <div className="edit-user-form">
+          <h2>Edit user info</h2>
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label>User name:</label>
+              <input
+                type="text"
+                value={userName}
+                onChange={e => setUserName(e.target.value)}
+              />
+            </div>
+            <div>
+              <label>First name:</label>
+              <input
+                type="text"
+                value={firstName}
+                onChange={e => setFirstName(e.target.value)}
+              />
+            </div>
+            <div>
+              <label>Last name:</label>
+              <input
+                type="text"
+                value={lastName}
+                onChange={e => setLastName(e.target.value)}
+              />
+            </div>
+            <button type="submit" className="save-button">Save</button>
+            <button type="button" className="cancel-button" onClick={() => setIsEditing(false)}>Cancel</button>
+          </form>
         </div>
-        <h2 className="sr-only">Accounts</h2>
-        <CartTransaction
-          title="Argent Bank Checking"
-          number="8349"
-          amount="2,082.79"
-          description="Available Balance"
-        />
-        <CartTransaction
-          title="Argent Bank Savings"
-          number="6712"
-          amount="10,928.42"
-          description="Available Balance"
-        />
-        <CartTransaction
-          title="Argent Bank Credit Card"
-          number="8349"
-          amount="184.30"
-          description="Current Balance"
-        />
-      </main>
-    </>
+      ) : (
+        <>
+          <div className="header">
+            <h1>
+              Welcome back<br />
+              {firstName} {lastName}!
+            </h1>
+            <button className="edit-button" onClick={() => setIsEditing(true)}>Edit Name</button>
+          </div>
+          <h2 className="sr-only">Accounts</h2>
+          <CartTransaction
+            title="Argent Bank Checking"
+            number="8349"
+            amount="2,082.79"
+            description="Available Balance"
+          />
+          <CartTransaction
+            title="Argent Bank Savings"
+            number="6712"
+            amount="10,928.42"
+            description="Available Balance"
+          />
+          <CartTransaction
+            title="Argent Bank Credit Card"
+            number="8349"
+            amount="184.30"
+            description="Current Balance"
+          />
+        </>
+      )}
+    </main>
   )
 }
