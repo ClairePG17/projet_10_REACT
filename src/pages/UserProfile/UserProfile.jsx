@@ -78,7 +78,7 @@ export default function UserProfile() {
           <div className="header">
             <h1>
               Welcome back<br />
-              {firstName} {lastName}!
+              {firstName} {lastName} !
             </h1>
             <button className="edit-button" onClick={() => setIsEditing(true)}>Edit Name</button>
           </div>

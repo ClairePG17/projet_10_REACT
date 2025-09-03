@@ -42,6 +42,37 @@ body {
   padding: 5px 20px;
 }
 
+/*ajout css*/
+.main-nav-logo-image {
+  height: 40px;
+}
+
+.main-nav-icons {
+  display: flex;
+  align-items: center;
+  gap: 25px; 
+}
+
+.main-nav-icon {
+  color: #42b983;
+  font-size: 20px; 
+  background: #fff;
+  border-radius: 50%;
+  padding: 8px;
+}
+
+.main-nav-username {
+  color: #42b983;
+  font-size: 1.2rem;
+  margin-right: 15px;
+}
+
+.main-nav_signOut{
+  display: flex;
+  gap: 20px;
+}
+/* fin ajout css*/
+
 .main-nav a {
   font-weight: bold;
   color: #2c3e50;
