@@ -4,32 +4,36 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/reducers/authSlice";
 
 export default function Nav() {
-  const token = useSelector(state => state.auth.token)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const token = useSelector((state) => state.auth.token);
+  const profile = useSelector((state) => state.auth.profile);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch(logout())
-    navigate("/")
-  }
+    dispatch(logout());
+    navigate("/");
+  };
 
   return (
     <nav className="main-nav">
       <Link className="main-nav-logo" to="/">
-        <img
-          className="main-nav-logo-image"
-          src={logo}
-          alt="Argent Bank Logo"
-        />
+        <img className="main-nav-logo-image" src={logo} alt="Argent Bank Logo" />
         <h1 className="sr-only">Argent Bank</h1>
       </Link>
+  
+      {token && profile && profile.userName ? (
+        <div>
+          <i className="fa fa-user"></i> {profile.userName}
+        </div>
+      ) : null}
+  
       <div>
         {token ? (
           <Link
             to="/"
             className="main-nav-item"
-            onClick={e => {
-              e.preventDefault(); 
+            onClick={(e) => {
+              e.preventDefault();
               handleLogout();
             }}
           >
@@ -46,4 +50,3 @@ export default function Nav() {
     </nav>
   )
 }
-

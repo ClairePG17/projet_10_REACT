@@ -12,9 +12,10 @@ export const userAPI = {
     return data
   },
 
+  // ✅ MODIFICATION : GET pour récupérer le profil utilisateur
   getProfile: async (token) => {
     const response = await fetch(`${BASE_URL}/profile`, {
-      method: 'POST',
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,

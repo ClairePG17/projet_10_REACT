@@ -56,7 +56,8 @@ export default function UserProfile() {
               <input
                 type="text"
                 value={firstName}
-                onChange={e => setFirstName(e.target.value)}
+                readOnly
+                disabled
               />
             </div>
             <div>
@@ -64,7 +65,8 @@ export default function UserProfile() {
               <input
                 type="text"
                 value={lastName}
-                onChange={e => setLastName(e.target.value)}
+                readOnly
+                disabled
               />
             </div>
             <button type="submit" className="save-button">Save</button>
