@@ -41,7 +41,7 @@ export default function UserProfile() {
     <main className="main bg-dark">
     {isEditing && (
       <div className="edit-user-form">
-        <h2>Edit user info</h2>
+        <h2 className="title">Edit user info</h2>
         <form onSubmit={handleSubmit}>
           <div>
             <label>User name:</label>
@@ -77,7 +77,7 @@ export default function UserProfile() {
   
     {!isEditing && (
       <div className="header">
-        <h1>
+        <h1 className="title">
           Welcome back<br />
           {firstName} {lastName} !
         </h1>

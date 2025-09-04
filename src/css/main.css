@@ -50,11 +50,11 @@ body {
 .main-nav-icons {
   display: flex;
   align-items: center;
-  gap: 25px; 
+  gap: 5px;
 }
 
 .main-nav-icon {
-  color: #42b983;
+  color: black;
   font-size: 20px; 
   background: #fff;
   border-radius: 50%;
@@ -62,14 +62,17 @@ body {
 }
 
 .main-nav-username {
-  color: #42b983;
+  color: black;
   font-size: 1.2rem;
-  margin-right: 15px;
 }
 
 .main-nav_signOut{
   display: flex;
   gap: 20px;
+}
+
+.main-nav-item{
+  font-weight: bolder;
 }
 
 .save-button, .cancel-button {
@@ -84,9 +87,9 @@ body {
 }
 
 .edit-user-form form label {
-  width: 100px;        /* largeur fixe pour aligner les labels */
-  margin-right: 15px;  /* espace entre label et input */
-  text-align: right;   /* alignement à droite du texte du label */
+  width: 100px;        
+  margin-right: 15px;  
+  text-align: right;   
 }
 
 .edit-user-form div{
@@ -97,6 +100,11 @@ body {
 .edit-user-form h2{
   color: #fff;
   padding-top: 20px;
+}
+
+.title{
+  margin-top: 0;
+  padding-top: 10px;
 }
 
 /* fin ajout css*/
