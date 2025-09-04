@@ -71,6 +71,34 @@ body {
   display: flex;
   gap: 20px;
 }
+
+.save-button, .cancel-button {
+  border-color: #42b983;
+  background-color: #42b983;
+  color: #fff;
+  padding: 5px 20px;
+  width: 120px; 
+  text-align: center;
+  border-radius: 10px;
+  margin: 10px 5px 30px 5px;
+}
+
+.edit-user-form form label {
+  width: 100px;        /* largeur fixe pour aligner les labels */
+  margin-right: 15px;  /* espace entre label et input */
+  text-align: right;   /* alignement à droite du texte du label */
+}
+
+.edit-user-form div{
+  margin : 10px;
+  color: #fff;
+}
+
+.edit-user-form h2{
+  color: #fff;
+  padding-top: 20px;
+}
+
 /* fin ajout css*/
 
 .main-nav a {

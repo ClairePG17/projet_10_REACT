@@ -80,8 +80,7 @@ const authSlice = createSlice({
         state.error = action.payload || action.error.message
       })
       .addCase(updateUserProfile.fulfilled, (state, action) => {
-        // Merge updated data to existing profile
-        state.profile = { ...state.profile, ...action.payload.body }
+        state.profile = action.payload.body
       })
   },
 })

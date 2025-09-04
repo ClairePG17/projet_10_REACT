@@ -12,7 +12,6 @@ export const userAPI = {
     return data
   },
 
-  // ✅ MODIFICATION : GET pour récupérer le profil utilisateur
   getProfile: async (token) => {
     const response = await fetch(`${BASE_URL}/profile`, {
       method: 'GET',
@@ -33,7 +32,7 @@ export const userAPI = {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(profileData), // Ex: { userName, firstName, lastName }
+      body: JSON.stringify(profileData),
     })
     const data = await response.json()
     if (!response.ok) throw data
