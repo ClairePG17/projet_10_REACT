@@ -1,10 +1,13 @@
-openapi: 3.0.0
+swagger: '2.0'
 info:
   title: ArgentBank Transactions API
   version: 2.0.0
   description: API endpoints for viewing and editing transaction information, grouped by account and linked to a specific user.
-servers:
-  - url: http://localhost:3001
+
+host: localhost:3001
+basePath: /
+schemes:
+  - http
 
 paths:
   /users/{userId}/accounts:
@@ -15,71 +18,43 @@ paths:
         - name: userId
           in: path
           required: true
-          schema:
-            type: string
+          type: string
       responses:
-        '200':
+        200:
           description: Successfully retrieved account list
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    accountId:
-                      type: string
-                      description: Unique identifier for the account
-        '404':
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/AccountId'
+        404:
           description: User not found
 
   /users/{userId}/accounts/{accountId}/transactions:
     get:
       summary: List transactions for an account, filtered by month
-      description: View all transactions for a given account during a specific month.
+      description: View all transactions for a given account during a specific month, grouped by account.
       parameters:
         - name: userId
           in: path
           required: true
-          schema:
-            type: string
+          type: string
         - name: accountId
           in: path
           required: true
-          schema:
-            type: string
+          type: string
         - name: month
           in: query
           required: false
-          schema:
-            type: string
-            example: "2025-09"
+          type: string
+          example: "2025-09"
       responses:
-        '200':
+        200:
           description: Successfully retrieved transactions
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    transactionId:
-                      type: string
-                      description: Unique transaction identifier
-                    date:
-                      type: string
-                      description: Date of the transaction
-                    description:
-                      type: string
-                      description: Description of the transaction
-                    amount:
-                      type: number
-                      description: Amount of money for the transaction
-                    balance:
-                      type: number
-                      description: Balance after the transaction
-        '404':
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TransactionShort'
+        404:
           description: Account or transactions not found
 
   /users/{userId}/accounts/{accountId}/transactions/{transactionId}:
@@ -90,76 +65,50 @@ paths:
         - name: userId
           in: path
           required: true
-          schema:
-            type: string
+          type: string
         - name: accountId
           in: path
           required: true
-          schema:
-            type: string
+          type: string
         - name: transactionId
           in: path
           required: true
-          schema:
-            type: string
+          type: string
       responses:
-        '200':
+        200:
           description: Transaction details found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  transactionType:
-                    type: string
-                    description: Type of the transaction (e.g., Electronic)
-                  category:
-                    type: string
-                    description: Category of the transaction (e.g., Food)
-                  note:
-                    type: string
-                    description: Additional notes for the transaction
-        '404':
+          schema:
+            $ref: '#/definitions/TransactionFull'
+        404:
           description: Transaction not found
 
     patch:
       summary: Edit transaction information
-      description: Edit certain fields in a transaction (note, category).
+      description: Edit certain fields in a transaction (transactionType, note, category).
       parameters:
         - name: userId
           in: path
           required: true
-          schema:
-            type: string
+          type: string
         - name: accountId
           in: path
           required: true
-          schema:
-            type: string
+          type: string
         - name: transactionId
           in: path
           required: true
+          type: string
+        - name: body
+          in: body
+          required: true
           schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                category:
-                  type: string
-                  description: New category
-                note:
-                  type: string
-                  description: New note
+            $ref: '#/definitions/TransactionUpdate'
       responses:
-        '200':
+        200:
           description: Transaction updated successfully
-        '400':
+        400:
           description: Invalid parameters
-        '404':
+        404:
           description: Transaction not found
 
     delete:
@@ -169,26 +118,67 @@ paths:
         - name: userId
           in: path
           required: true
-          schema:
-            type: string
+          type: string
         - name: accountId
           in: path
           required: true
-          schema:
-            type: string
+          type: string
         - name: transactionId
           in: path
           required: true
-          schema:
-            type: string
+          type: string
         - name: field
           in: query
           required: true
-          schema:
-            type: string
-            enum: [note, category] 
+          type: string
+          enum:
+            - note
+            - category
       responses:
-        '200':
+        200:
           description: Information deleted successfully
-        '404':
+        404:
           description: Transaction or field not found
+
+definitions:
+  AccountId:
+    type: object
+    properties:
+      accountId:
+        type: string
+        description: Unique identifier for the account
+
+  TransactionShort:
+    type: object
+    properties:
+      transactionId:
+        type: string
+        description: Unique transaction identifier
+      date:
+        type: string
+      description:
+        type: string
+      amount:
+        type: number
+      balance:
+        type: number
+
+  TransactionFull:
+    type: object
+    properties:
+      transactionType:
+        type: string
+      category:
+        type: string
+      note:
+        type: string
+
+  TransactionUpdate:
+    type: object
+    properties:
+      transactionType:
+        type: string
+      category:
+        type: string
+      note:
+        type: string
