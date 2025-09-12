@@ -9,7 +9,6 @@ basePath: /api/v1
 schemes:
   - http
 
-# Définitions de sécurité générales
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -133,17 +132,13 @@ paths:
         404:
           description: User not found
 
-  /users/{userId}/accounts/{accountId}/transactions:
+  /{accountId}/transactions:
     get:
       tags:
         - Transactions Module
       summary: List transactions for an account, filtered by month
       description: View all transactions for a given account during a specific month, grouped by account.
       parameters:
-        - name: userId
-          in: path
-          required: true
-          type: string
         - name: accountId
           in: path
           required: true
@@ -163,21 +158,13 @@ paths:
         404:
           description: Account or transactions not found
 
-  /users/{userId}/accounts/{accountId}/transactions/{transactionId}:
+  /{transactionId}:
     get:
       tags:
         - Transactions Module
       summary: Get details of a transaction
       description: Returns detailed information for a specific transaction.
       parameters:
-        - name: userId
-          in: path
-          required: true
-          type: string
-        - name: accountId
-          in: path
-          required: true
-          type: string
         - name: transactionId
           in: path
           required: true
@@ -196,14 +183,6 @@ paths:
       summary: Edit transaction information
       description: Edit certain fields in a transaction (transactionType, note, category).
       parameters:
-        - name: userId
-          in: path
-          required: true
-          type: string
-        - name: accountId
-          in: path
-          required: true
-          type: string
         - name: transactionId
           in: path
           required: true
@@ -227,14 +206,6 @@ paths:
       summary: Delete additional information from a transaction
       description: Delete the note or category from a transaction without deleting the transaction itself.
       parameters:
-        - name: userId
-          in: path
-          required: true
-          type: string
-        - name: accountId
-          in: path
-          required: true
-          type: string
         - name: transactionId
           in: path
           required: true
