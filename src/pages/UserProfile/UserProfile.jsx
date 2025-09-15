@@ -38,7 +38,7 @@ export default function UserProfile() {
   }
 
   return (
-    <main className="main bg-dark">
+    <main className="bg-dark">
     {isEditing && (
       <div className="edit-user-form">
         <h2 className="title">Edit user info</h2>
