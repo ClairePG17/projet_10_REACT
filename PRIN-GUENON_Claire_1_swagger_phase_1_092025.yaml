@@ -200,28 +200,6 @@ paths:
         404:
           description: Transaction not found
 
-    delete:
-      tags:
-        - Transactions Module
-      summary: Delete additional information from a transaction
-      description: Delete the note or category from a transaction without deleting the transaction itself.
-      parameters:
-        - name: transactionId
-          in: path
-          required: true
-          type: string
-        - name: field
-          in: query
-          required: true
-          type: string
-          enum:
-            - note
-            - category
-      responses:
-        200:
-          description: Information deleted successfully
-        404:
-          description: Transaction or field not found
 
 definitions:
   # User Module
