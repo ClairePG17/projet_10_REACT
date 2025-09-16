@@ -6,7 +6,7 @@ export const signIn = createAsyncThunk(
   async (credentials, thunkAPI) => {
     try {
       const response = await userAPI.signIn(credentials)
-      return response.body.token
+      return response.token || response.body.token;
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
     }
